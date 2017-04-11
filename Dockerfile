@@ -1,4 +1,3 @@
-#!/bin/bash
 lb1:
   scale: 1
   scaleindelay: 6

@@ -1,1 +1,80 @@
-git clone http://code-sh.rnd.huawei.com/AI_Infinity/trafficStructure-plugin.git
+git clone http://xxxx.git
+
+git stash
+当前代码有改动，但是不想commit 想直接pull最新代码
+此时就可以使用git stash
+/**
+git stash会把所有未提交的修改（包括暂存的和非暂存的）都保存起来，用于后续恢复当前工作目录;
+需要说明一点，stash是本地的，不会通过git push命令上传到git server上。
+实际应用中推荐给每个stash加一个message，用于记录版本，使用git stash save取代git stash命令。示例如下：
+
+$ git stash save "test-cmd-stash"
+2. 重新应用缓存的stash
+可以通过git stash pop命令恢复之前缓存的工作目录，输出如下：
+$ git stash pop
+这个指令将缓存堆栈中的第一个stash删除，并将对应修改应用到当前的工作目录下。
+你也可以使用git stash apply命令，将缓存堆栈中的stash多次应用到工作目录中，但并不删除stash拷贝。命令输出如下：
+$ git stash apply
+可以使用git stash list命令查看现有stash，一个典型的输出如下：
+$ git stash list
+stash@{0}: WIP on master: 049d078 added the index file
+stash@{1}: WIP on master: c264051 Revert "added file_size"
+stash@{2}: WIP on master: 21d80a5 added number to log
+使用git stash apply命令时可以通过名字指定使用哪个stash，默认使用最近的stash（即stash@{0}）
+可以使用git stash drop命令，后面可以跟着stash名字。下面是一个示例：
+$ git stash list
+stash@{0}: WIP on master: 049d078 added the index file
+stash@{1}: WIP on master: c264051 Revert "added file_size"
+stash@{2}: WIP on master: 21d80a5 added number to log
+$ git stash drop stash@{0}
+Dropped stash@{0} (364e91f3f268f0900bc3ee613f9f733e82aaed43)
+**/
+git add .  将当前项目中的所有文件添加到缓存区
+git status -s  可以查看当前状态，如果git add之后又有新的改动，那么需要再次git add .
+git commit   将缓存区的内容添加到本地仓库
+git commit -m "add a new file"   加上-m可以增加注释
+
+Git 为你的每一个提交都记录你的名字与电子邮箱地址，所以第一步需要配置用户名和邮箱地址。
+$ git config --global user.name 'smidemon'
+$ git config --global user.email smidemon@xxx.com
+
+如果你觉得 git add 提交缓存的流程太过繁琐，Git 也允许你用 -a 选项跳过这一步。命令格式如下：
+$ git commit -am "add a new file again"
+
+如果你提交了两个文件到缓存，现在想撤回一个，那么可以使用以下命令
+$ git status -s     先查看缓存区有哪些文件
+$ git reset HEAD filename  指定文件撤销缓存
+之后commit就只会提交未被撤回的文件
+
+git rm
+
+$ git rm file      从工作目录中删除文件
+$ git rm -f file   从工作目录中删除文件并且文件已经添加到缓存区
+$ git rm --cached file  仅从缓存区删除文件，文件仍保留在工作目录中
+
+$ git branch    后面不加参数的时候会显示本地所有的分支
+$ git branch branch_name  创建新分支
+$ git checkout branch_name  切换至指定分支
+$ git checkout -b branch_name  新建一个分支并切换到新分支
+$ git branch -d branch_name  删除分支
+$ git merge    用于从指定的commit(s)合并到当前分支，用来合并两个分支；
+$ git pull origin master   从指定分支拉取最新代码，并自动merge
+$ git fetch    从指定分支拉取最新代码，不自动merge
+$ git push     上传代码到远程仓库，加上-f是强推
+
+git merge 冲突时解决方法
+冲突说明两个分支在对文件的同一处进行了修改，导致系统不知道该保留哪处修改，格式一般为<<<<<<< HEAD xxxxxxxxx  >>>>>>>>>>>分支名
+这时需要进入到该文件中，对该处修改进行选择，然后删除标记符号，修改之后可以用 git add 要告诉 Git 文件冲突已经解决
+然后commit并push，也可以直接push
+
+git reset --hard    版本回退
+$ git log    查看提交历史，回到过去
+找到某次提交的id后，执行以下命令回退
+$ git reset --hard $id
+如果只是回退到上一个版本，那么可以使用HEAD^表示，HEAD^^表示上两个版本
+$ git reset --hard HEAD^
+$ git reflog  回到未来
+
+git revert   撤销某次操作
+
+

@@ -43,7 +43,7 @@ $ git commit -am "add a new file again"
 
 如果你提交了两个文件到缓存，现在想撤回一个，那么可以使用以下命令
 $ git status -s     先查看缓存区有哪些文件
-$ git reset HEAD filename  指定文件撤销缓存
+$ git reset HEAD filename  指定文件撤销缓存，不加filename参数则撤销所有文件
 之后commit就只会提交未被撤回的文件
 
 git rm
